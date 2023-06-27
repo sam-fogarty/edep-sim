@@ -208,7 +208,17 @@ G4VPhysicalVolume* EDepSim::UserDetectorConstruction::Construct() {
                                << " step limit to " << stepLimit
                                << " from " << auxItem->value);
                     aux->first->SetUserLimits(new G4UserLimits(stepLimit));
-                    break;
+                    
+                }
+                if (auxItem->type == "maxStepSize") {
+                    double maxStepSize = ParseUnit(auxItem->value,"mm");
+                    EDepSimLog("Set volume " << aux->first->GetName()
+                               << " max step size to " << maxStepSize
+                               << " from " << auxItem->value);
+                    G4UserLimits* userLimits_step = new G4UserLimits();
+                    userLimits_step->SetMaxAllowedStep(maxStepSize);
+                    aux->first->SetUserLimits(userLimits_step);
+                    break; 
                 }
             }
         }
